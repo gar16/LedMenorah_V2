@@ -1,2 +1,2 @@
 # LedMenorah_V2
-Second version opf LED menorah with ATTINY2313
+Second version of LED menorah with ATTINY2313
