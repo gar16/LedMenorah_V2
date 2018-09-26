@@ -1,9 +1,9 @@
 /*
  *  Author: Pin
  */ 
-#define F_CPU 1000000UL
+#define F_CPU 1000000UL //clock frequency
 
-#define shamashBrightness OCR0A
+#define shamashBrightness OCR0A //PWM top value
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -26,11 +26,11 @@ int main(void)
 	
 	//variables
 	//set data direction registers
-	DDRA = 0xff;
+	DDRA = 0xff; //all output
 	DDRB = 0xff;
 	DDRD = 0xff;
-	DDRB &= ~(1<<DDB3);
-	PORTB |= (1<<PORTB3);
+	DDRB &= ~(1<<DDB3); //B3 as input
+	PORTB |= (1<<PORTB3); //Pullup B3
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 	setup_timer0_PWM();
 	PORTA = 0xff;
