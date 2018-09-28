@@ -3,8 +3,6 @@
  *
  *  Author: Pin
  */ 
-
-
 #ifndef MENORAHINC_H_
 #define MENORAHINC_H_
 
@@ -22,10 +20,12 @@
 #define secondN		PORTA0
 #define firstN		PORTA1
 #define button		PORTB3
+
 //progmem to put constant into flash to save stack space
 const uint8_t ledPins []  PROGMEM =  {0, firstN, secondN, thirdN, fourthN, fifthN, sixthN, seventhN, eightN};
 const uint8_t ledPorts []  PROGMEM = {0, pportA, pportA,  pportD, pportD,  pportD, pportD, pportB,   pportD};
-//define functionsr
+
+//define functions
 void turn_on_lights(int);
 void setup_timer0_PWM();
 void setup_timer1();
