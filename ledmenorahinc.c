@@ -1,9 +1,11 @@
 /*
+ * Created: 10/18/2015 12:51:46 AM
+ * V2 9/2018
  *  Author: Pin
  */ 
-#define F_CPU 1000000UL //clock frequency
+#define F_CPU 1000000UL
 
-#define shamashBrightness OCR0A //PWM top value
+#define shamashBrightness OCR0A
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -26,11 +28,11 @@ int main(void)
 	
 	//variables
 	//set data direction registers
-	DDRA = 0xff; //all output
+	DDRA = 0xff;
 	DDRB = 0xff;
 	DDRD = 0xff;
-	DDRB &= ~(1<<DDB3); //B3 as input
-	PORTB |= (1<<PORTB3); //Pullup B3
+	DDRB &= ~(1<<DDB3);
+	PORTB |= (1<<PORTB3);
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 	setup_timer0_PWM();
 	PORTA = 0xff;
@@ -150,7 +152,7 @@ ISR (PCINT_B_vect)//pin change interrupt function for lighting LEDs, ***add wake
 	if(!(PINB & (1<<PINB3))) //pin B3 is low
 	{
 		//problem coming back from sleep may be with debounce
-		_delay_ms(150);
+		_delay_ms(150);//button debounce
 // 		sei();
 		clear_lights();
 		nightNum++;
@@ -224,7 +226,7 @@ void go_to_sleep()
 	TCCR0A = 0;
 	sleep_mode();
 	//                         
-
+	
 	//
 	shamashBrightness = 254;
 	TCCR0A |= (1 << COM0A1) | (1 << WGM00) | (1<<WGM01);  // fast PWM mode on pin OC0A
