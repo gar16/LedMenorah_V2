@@ -15,18 +15,18 @@
 #define pportB 0x018
 #define pportD 0x012
 //define LEDs for nights
-#define eightN		PORTD6 //on v1 PORTA0
-#define seventhN	PORTB0 //on v1 PORTD2
-#define sixthN		PORTD5 //on v1 PORTD3
-#define fifthN		PORTD4 //on v1 PORTD4
-#define fourthN		PORTD3 //on v1 PORTD5
-#define thirdN		PORTD2 //on v1 PORTD6
-#define secondN		PORTA0 //on v1 PORTB0
-#define firstN		PORTA1 //on v1 PORTB1
+#define eightN		PORTD3
+#define seventhN	PORTD2
+#define sixthN		PORTA0
+#define fifthN		PORTA1
+#define fourthN		PORTB7
+#define thirdN		PORTB6 
+#define secondN		PORTB5 
+#define firstN		PORTB4
 #define button		PORTB3
 //progmem to put constant into flash to save stack space
 const uint8_t ledPins []  PROGMEM =  {0, firstN, secondN, thirdN, fourthN, fifthN, sixthN, seventhN, eightN};//pins for each LED from V1
-const uint8_t ledPorts []  PROGMEM = {0, pportA, pportA,  pportD, pportD,  pportD, pportD, pportB,   pportD} ;//ports matching LEDs from V1
+const uint8_t ledPorts []  PROGMEM = {0, pportB, pportB,  pportB, pportB,  pportA, pportA, pportD,   pportD} ;//ports matching LEDs from V1
 //define functionsr
 void turn_on_lights(int);
 void setup_timer0_PWM();
