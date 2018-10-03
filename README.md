@@ -1,2 +1,2 @@
 # LedMenorah_V2
-Second version of LED menorah with ATtiny2313
+Second version of LED menorah with ATtiny2313. This second version is powered by two AA batteries, the holders double as the stand. the UART pins are broken out so that communication is possible. For example you could use a raspberry pi to automatically control the lighting. Firmware programming can be via ISP programming spider. I decided not to include the ISP header as it takes up a significant amount of space and just looks bad to me. Additionally anyone intrested in programming would likely be able to build a programming spider with very little effort.
