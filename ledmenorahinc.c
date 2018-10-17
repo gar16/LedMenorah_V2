@@ -1,4 +1,5 @@
 /*
+ *
  * Created: 10/18/2015 12:51:46 AM
  * V2 9/2018
  *  Author: Pin
@@ -13,7 +14,6 @@
 #include "ledmenorahinc.h"
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
-#include <avr/wdt.h>
 
 //
 uint8_t fadeAmount = 1;
@@ -25,7 +25,6 @@ volatile uint8_t nightNum = 0;//number of leds to light
 //
 int main(void)
 {
-	
 	//variables
 	//set data direction registers
 	DDRA = 0xff;
@@ -38,16 +37,17 @@ int main(void)
 	PORTA = 0xff;
 	PORTB = 0xff;
 	PORTD = 0xff;
+	
+	
 	PCMSK |= (1<<PCINT3);//enable pin change interrupt
 	GIMSK |= (1<<PCIE0);//interrupt mask enable
 	sei();
-	clear_lights();
+	
+	
 	while(1)
 	{
-			if (buttonPressed ==1)
-			{
-				night_select();
-			}
+		
+		night_select();
 	}
 
 }
@@ -55,11 +55,10 @@ int main(void)
 
  void night_select()
  {	 	
-	 clear_lights();	
 	 buttonPressed=0;
 
-	 
-	 if (nightNum ==9)
+	
+	if (nightNum ==9)
 	{
 		larson_scan();
 	}
@@ -68,19 +67,14 @@ int main(void)
 	{
 		led_in_out();
 	}
+	
 	else if (nightNum >= 11)
 	{
-		
-		go_to_sleep();
-// 		clear_lights();
+		clear_lights();
 		nightNum = 0;
+		go_to_sleep();	
 	}
-// 		else if (nightNum==12)
-// 		{
-// 
-// 			go_to_sleep();
-// // 			nightNum=0;
-// 		}
+	 
 	else if (nightNum <=8)
 	{
 		turn_on_lights(nightNum);
@@ -91,7 +85,6 @@ int main(void)
  
 void turn_on_lights(int night)
 {
-	clear_lights();
 			for (int i = night; i >= 0; i--)// light nights one at a time to value of night
 			{
 				if (buttonPressed ==1)//this makes strange stuff happen when back from sleep
@@ -110,7 +103,7 @@ void turn_on_lights(int night)
 
 void clear_lights()
 {
-	for (int i = 0; i <= 8; i++)// light nights one at a time to value of night
+	for (int i = 0; i <= 8; i++)
 	{
 		_SFR_IO8(pgm_read_byte(&ledPorts[i])) |= (1<<pgm_read_byte(&ledPins[i])); // low night LEd pins in order
 	}
@@ -148,16 +141,17 @@ ISR (TIMER0_COMPB_vect)// timer interrupt for shamash fader
 
 ISR (PCINT_B_vect)//pin change interrupt function for lighting LEDs, ***add wakeup from sleep
 {
-	
-	if(!(PINB & (1<<PINB3))) //pin B3 is low
-	{
-		//problem coming back from sleep may be with debounce
-		_delay_ms(150);//button debounce
-// 		sei();
+// 	_delay_ms(50);// debounce
+// 	if(!(PINB & (1<<PINB3))) //pin B3 is low
+// 	{
+		_delay_ms(100);
+		
+		if(!(PINB & (1<<PINB3))){
 		clear_lights();
 		nightNum++;
 		buttonPressed = 1;
-	}
+		}
+// 	}
 }
 
 void larson_scan()
@@ -222,14 +216,18 @@ void led_in_out()
 void go_to_sleep()
 {
 // 	TCCR0B |= (1<<CS02) | (1<<CS01) | (1<<CS00);
-    clear_lights();
+	clear_lights();
 	TCCR0A = 0;
+	nightNum = 0;
 	sleep_mode();
-	//                         
+
+	
+	nightNum = 0;
+	//                    
 	
 	//
+	
 	shamashBrightness = 254;
 	TCCR0A |= (1 << COM0A1) | (1 << WGM00) | (1<<WGM01);  // fast PWM mode on pin OC0A
-	
+// 	
 }
-
