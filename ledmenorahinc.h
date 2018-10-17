@@ -27,7 +27,7 @@
 //progmem to put constant into flash to save stack space
 const uint8_t ledPins []  PROGMEM =  {0, firstN, secondN, thirdN, fourthN, fifthN, sixthN, seventhN, eightN};//pins for each LED from V1
 const uint8_t ledPorts []  PROGMEM = {0, pportB, pportB,  pportB, pportB,  pportA, pportA, pportD,   pportD} ;//ports matching LEDs from V1
-//define functions
+//define functionsr
 void turn_on_lights(int);
 void setup_timer0_PWM();
 void setup_timer1();
@@ -38,4 +38,5 @@ void led_in_out();
 void go_to_sleep();
 void night_select();
 void check_button();
+void back_from_sleep();
 #endif /* MENORAHINC_H_ */
