@@ -1,7 +1,7 @@
 /*
  * ledmenorahv32018.c
  *
- * Created: 10/2018 11:50:45 AM
+ * Created: 10/16/2018 11:50:45 AM
  * Author : Pin
  */ 
 
@@ -52,6 +52,8 @@ void clear_lights();
 void light_menorah(int nightNumber);
 void in_and_out();
 void xmas_mode_for_z();
+void fast_xmas_mode();
+//
 int main(void)
 {
 	DDRA =0xff;
@@ -83,17 +85,21 @@ int main(void)
 				light_menorah(nightNumber);
 			}
 			if (nightNumber == 9){
-				larson_scanner();
-			}
-			if (nightNumber == 10){
-				in_and_out();
-			}
-			if (nightNumber == 11){
 				xmas_mode_for_z();
 			}
-			if (nightNumber > 11){
+			if (nightNumber == 10){
+				fast_xmas_mode();
+			}
+			if (nightNumber == 11){
+				larson_scanner();
+			}
+			if (nightNumber == 12){
+				in_and_out();
+			}
+			if (nightNumber > 12){
 				clear_lights();
 				TCCR0A = 0;
+				//add delay so you don't accidentally trigger back from sleep
 				nightNumber = -1;
 				sleep_mode();
 				setup_timer0_PWM();
@@ -174,6 +180,16 @@ void xmas_mode_for_z(){
 		_delay_ms(500);
 	}
 }
+void fast_xmas_mode(){
+	
+	while (buttonPressed == 0){
+		int8_t ranLightnum = rand() % 9;
+		turn_on_led(ranLightnum);
+		ranLightnum = rand() % 9;
+		turn_off_led(ranLightnum);
+		_delay_ms(100);
+	}
+}
 
 void turn_on_led(int nightLed){
 	
@@ -215,7 +231,7 @@ ISR (TIMER0_COMPB_vect){// timer interrupt for shamash fader
 
 ISR (PCINT_B_vect){
 	if(!(PINB & (1<<PINB3))){
-		_delay_ms(150); //crude debounce, change to non-blocking later
+		_delay_ms(100); //crude debounce, change to non-blocking later
 		buttonPressed = 1;
 	}
 }
