@@ -5,7 +5,6 @@
  * Author : Pin
  */ 
 
-
 #define F_CPU 1000000UL //set cpu speed to 1mhz
 //includes
 #include <avr/io.h>
@@ -80,7 +79,6 @@ int main(void)
 			if (nightNumber ==0){
 				clear_lights();
 			}
-		
 			if (nightNumber >0 && nightNumber <9){
 				light_menorah(nightNumber);
 			}
@@ -99,12 +97,11 @@ int main(void)
 			if (nightNumber > 12){
 				clear_lights();
 				TCCR0A = 0;
-				//add delay so you don't accidentally trigger back from sleep
 				nightNumber = -1;
 				sleep_mode();
 				setup_timer0_PWM();
 			}
-	}//end main while loop
+		}//end main while loop
 	}
 }
 
@@ -136,9 +133,6 @@ void larson_scanner(){
 			_delay_ms(50);
 		}
 	}
-	
-
-
 }
 
 void in_and_out(){
@@ -180,6 +174,7 @@ void xmas_mode_for_z(){
 		_delay_ms(500);
 	}
 }
+
 void fast_xmas_mode(){
 	
 	while (buttonPressed == 0){
@@ -192,36 +187,28 @@ void fast_xmas_mode(){
 }
 
 void turn_on_led(int nightLed){
-	
 	_SFR_IO8(led_ports[nightLed]) &= ~(1<<led_pins[nightLed]);
-	
 }
 
 void turn_off_led(int nightLed){
-	
 	_SFR_IO8(led_ports[nightLed]) |= (1<<led_pins[nightLed]);
 }
 
 void setup_timer0_PWM(){
 	TCCR0A = (1 << COM0A1) | (1 << WGM00) | (1<<WGM01);  // fast PWM mode on pin OC0A
-
 	TCCR0B = (1 << CS01);   // clock source = CLK/8, start PWM
-	
 	TIMSK |= (1<<OCIE0B);	//Timer/Counter0 Output Compare Match B Interrupt Enable
 	shamashBrightness = 254;
-	
 }
 
 void shamash_fader(){
 	shamashBrightness = shamashBrightness + (fadeAmount);
-	
 	if (shamashBrightness == 0 || shamashBrightness == 255) {
 		fadeAmount = -fadeAmount ;
 	}
 }
 
 ISR (TIMER0_COMPB_vect){// timer interrupt for shamash fader
-
 	if (fadeRatecounter>=5){
 		shamash_fader();
 		fadeRatecounter = 0;
