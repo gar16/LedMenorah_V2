@@ -2,7 +2,7 @@
  * ledmenorahv32018.c
  *
  * Created: 10/16/2018 11:50:45 AM
- * Author : Pin
+ * Author : JPG
  */ 
 
 #define F_CPU 1000000UL //set cpu speed to 1mhz
